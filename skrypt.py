@@ -8,15 +8,6 @@ Currently it's just a Kindle forwarder. Too lazy to document for now.
 from config import imap_host, smtp_host, smtp_port, user, passwd
 from config import from_addr, admin_addr, to_addr
 
-imap_host = "imap.gmail.com"
-smtp_host = "smtp.gmail.com"
-smtp_port = 587
-user = "d33tah.kindle"
-passwd = "nKx872ML"
-from_addr = user
-admin_addr = "d33tah@gmail.com"
-to_addr = "d33tah@kindle.com"
-
 client = imaplib.IMAP4_SSL(imap_host)
 client.login(user, passwd)
 client.select('INBOX')
