@@ -8,6 +8,17 @@ Currently it's just a Kindle forwarder. Too lazy to document for now.
 from config import imap_host, smtp_host, smtp_port, user, passwd
 from config import from_addr, admin_addr, to_addr
 
+from sys import stdout
+import logging
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+ch = logging.StreamHandler(stdout)
+formatter = logging.Formatter(
+	"[%(asctime)s][%(levelname)s] %(filename)s:%(lineno)d"\
+	+" %(message)s")
+ch.setFormatter(formatter)
+logger.addHandler(ch)
+
 client = imaplib.IMAP4_SSL(imap_host)
 client.login(user, passwd)
 client.select('INBOX')
@@ -35,7 +46,7 @@ for email_id in reversed(email_ids):
 	message.replace_header("To", to_addr)
 	del message['Message-ID']
 
-	print(message.as_string())
+	logger.info(message.as_string())
 	sender_domain = original_from.split('@')[1].lower()
 	if sender_domain.find('kindle')==-1 and sender_domain.find('amazon')==-1:
 		smtp.sendmail(from_addr, to_addr, message.as_string())
@@ -49,10 +60,10 @@ for email_id in reversed(email_ids):
 	client.expunge()
 
 if smtp_loggedin:
-	print("...done.")
+	logger.info("...done.")
 	smtp.quit()
 else:
-	print("...did nothing.")
+	logger.info("...did nothing.")
 
 client.close()
 client.logout()
