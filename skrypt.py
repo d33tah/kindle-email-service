@@ -51,7 +51,7 @@ for email_id in reversed(email_ids):
 	if sender_domain.find('kindle')==-1 and sender_domain.find('amazon')==-1:
 		smtp.sendmail(from_addr, to_addr, message.as_string())
 		message.replace_header('Subject',"Re: %s" % original_subject)
-		message.set_payload('SENT.\n\n'+message.get_payload())
+		message.set_payload('SENT.')
 		smtp.sendmail(from_addr, admin_addr, message.as_string())
 	else:
 		message.replace_header('Subject',"KINDLE ERROR: %s" % original_subject)
